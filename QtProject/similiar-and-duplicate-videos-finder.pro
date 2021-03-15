@@ -23,40 +23,37 @@ FORMS += \
     mainwindow.ui \
     comparison.ui
 
-# OpenCV libraries
-INCLUDEPATH += $$PWD/libraries/opencv/include
-DEPENDPATH += $$PWD/libraries/opencv/include
 
-macx: LIBS += -L$$PWD/libraries/opencv/lib/ -lopencv_imgproc -lopencv_core
+LIBS += \
+    /usr/lib64/libopencv_core.so \
+    /usr/lib64/libopencv_imgproc.so \
+    /usr/lib64/libavcodec.so \
+    /usr/lib64/libavdevice.so \
+    /usr/lib64/libavfilter.so \
+    /usr/lib64/libavformat.so \
+    /usr/lib64/libavutil.so \
+    /usr/lib64/libpostproc.so \
+    /usr/lib64/libswresample.so \
+    /usr/lib64/libswscale.so \
+    -L/opt/nvidia/lib64/ \
+    -L/opt/cuda/lib64/
 
-macx: PRE_TARGETDEPS += $$PWD/libraries/opencv/lib/libopencv_core.a \
-                        $$PWD/libraries/opencv/lib/libopencv_imgproc.a
+INCLUDEPATH += "/usr/include/opencv4"
 
-## OpenCV static libs dependencies
-macx: LIBS += -L$$PWD/libraries/opencv/lib/opencv4/3rdparty -lzlib -littnotify -lippiw -lippicv -framework OpenCL -framework Accelerate
-
-# ffmpeg libraries
-INCLUDEPATH += $$PWD/libraries/ffmpeg/include
-
-## libavformat and libavutil static libs dependencies (from pckgconfig file)
-macx: LIBS += -L$$PWD/libraries/ffmpeg/lib -lavutil -lavformat \ # wanted libraries, below are other libraries that were needed to make it work
-                                            -lswresample -lavcodec \
-                                            -lbz2 -liconv -llzma -Wl,-no_compact_unwind \
-                                            -framework CoreVideo -framework Security  -framework AudioToolbox -framework CoreMedia -framework VideoToolbox
-
-macx: PRE_TARGETDEPS += $$PWD/libraries/ffmpeg/lib/libavutil.a \
-                        $$PWD/libraries/ffmpeg/lib/libavformat.a
-                        $$PWD/libraries/ffmpeg/lib/libswresample.a
-                        $$PWD/libraries/ffmpeg/lib/libavcodec.a
+QMAKE_CFLAGS = -g -Og -march=native -mtune=native -fPIC -Wpedantic -Wall -Wextra -pthread -static-libstdc++ -static-libgcc -std=c17
+QMAKE_CXXFLAGS = -g -Og -march=native -mtune=native -fPIC -Wpedantic -Wall -Wextra -pthread -static-libstdc++ -static-libgcc -std=c++17
+QMAKE_LFLAGS = -g -Og -march=native -mtune=native -fPIC -Wpedantic -Wall -Wextra -fuse-ld=lld -pthread -static-libstdc++ -static-libgcc
+QMAKE_LDLAGS = -g -Og -march=native -mtune=native -fPIC -Wpedantic -Wall -Wextra -fuse-ld=lld -pthread -static-libstdc++ -static-libgcc
+CFLAGS = -g -Og -march=native -mtune=native -fPIC -Wpedantic -Wall -Wextra -pthread -static-libstdc++ -static-libgcc -std=c17
+CXXFLAGS = -g -Og -march=native -mtune=native -fPIC -Wpedantic -Wall -Wextra -pthread -static-libstdc++ -static-libgcc -std=c++17
+LFLAGS = -g -Og -march=native -mtune=native -fPIC -Wpedantic -Wall -Wextra -fuse-ld=lld -pthread -static-libstdc++ -static-libgcc
+LDLAGS = -g -Og -march=native -mtune=native -fPIC -Wpedantic -Wall -Wextra -fuse-ld=lld -pthread -static-libstdc++ -static-libgcc
+QMAKE_CFLAGS_ISYSTEM = -I
+CCACHE_DISABLE=1
 
 # Other things
 RC_ICONS = icon16.ico
 ICON = AppIcon.icns
-
-APP_QML_FILES.files = \
-    $$PWD/deps/ffmpeg
-APP_QML_FILES.path = Contents/Frameworks
-QMAKE_BUNDLE_DATA += APP_QML_FILES
 
 QMAKE_TARGET_PRODUCT = \"\\\"$$TARGET\\\"\"
 QMAKE_TARGET_DESCRIPTION = \"\\\"$$TARGET\\\"\"

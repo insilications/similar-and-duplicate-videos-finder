@@ -1,11 +1,18 @@
 #ifndef COMPARISON_H
 #define COMPARISON_H
 
-#include <QDialog>
-#include <QDesktopServices>
-#include <QUrl>
-#include <QLabel>
+#include "mainwindow.h"
+#include "prefs.h"
 #include "video.h"
+#include <opencv2/imgproc.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <QDebug>
+#include <QDesktopServices>
+#include <QDialog>
+#include <QLabel>
+#include <QMessageBox>
+#include <QUrl>
+#include <QWheelEvent>
 
 namespace Ui { class Comparison; }
 

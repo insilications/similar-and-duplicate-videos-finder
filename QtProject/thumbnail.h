@@ -1,6 +1,7 @@
 #ifndef THUMBNAIL_H
 #define THUMBNAIL_H
 
+#include <QStringList>
 #include <QVector>
 
 enum modes { thumb1, thumb2, thumb3, thumb4, thumb6, thumb9, thumb12, cutEnds };

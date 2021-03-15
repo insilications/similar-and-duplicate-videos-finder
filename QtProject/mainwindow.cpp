@@ -113,7 +113,7 @@ void MainWindow::loadExtensions()
 
 bool MainWindow::detectffmpeg()
 {
-    _ffmpegPath = QCoreApplication::applicationDirPath() + "/../Frameworks/ffmpeg";
+    _ffmpegPath = "ffmpeg";
 
     QProcess ffmpeg;
     ffmpeg.setProcessChannelMode(QProcess::MergedChannels);

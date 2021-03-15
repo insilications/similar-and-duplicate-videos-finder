@@ -59,10 +59,10 @@ void Video::run()
 void Video::getMetadata(const QString &filename)
 {
 #ifdef QT_DEBUG
-    ffmpeg::AVFormatContext *fmt_ctx = NULL;
-    ffmpeg::AVDictionaryEntry *tag = NULL;
+    AVFormatContext *fmt_ctx = NULL;
+    AVDictionaryEntry *tag = NULL;
     int ret;
-    ffmpeg::av_register_all();
+    av_register_all();
     ret = avformat_open_input(&fmt_ctx, QDir::toNativeSeparators(filename).toStdString().c_str(), NULL, NULL);
     if (ret < 0) {
         qDebug() << "Could not open input\n";
@@ -231,7 +231,10 @@ int Video::takeScreenCaptures(const Db &cache)
         if(frame.width() > width || frame.height() > height)    //metadata parsing error or variable resolution
             return _failure;
 
-        QPainter painter(&thumbnail);                           //copy captured frame into right place in thumbnail
+        QFileInfo fileInfo(filename);
+        frame.save(QStringLiteral("%1-frame%2.png").arg(fileInfo.baseName()).arg(capture));
+
+        QPainter painter(&thumbnail); //copy captured frame into right place in thumbnail
         painter.drawImage(capture % thumb.cols() * width, capture / thumb.cols() * height, frame);
 
         if(writeToCache)
@@ -241,7 +244,8 @@ int Video::takeScreenCaptures(const Db &cache)
             cache.writeCapture(percentages[capture], cachedImage);
         }
     }
-
+    QFileInfo fileInfo(filename);
+    thumbnail.save(QStringLiteral("%1-thumb.png").arg(fileInfo.baseName()));
     const int hashes = _prefs._thumbnails == cutEnds? 2 : 1;    //if cutEnds mode: separate hash for beginning and end
     processThumbnail(thumbnail, hashes);
     return _success;
